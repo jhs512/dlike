@@ -1,0 +1,111 @@
+<html layout:decorate="~{common/layout.html}">
+
+<body>
+
+<header layout:fragment="header" class="sticky top-0 z-50">
+    <div class="navbar max-w-2xl mx-auto bg-base-100">
+        <div class="navbar-start">
+            <div class="dropdown">
+                <label tabindex="0" class="btn btn-ghost btn-circle">
+                    <i class="fa-solid fa-bars"></i>
+                </label>
+                <ul tabindex="0"
+                    class="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-64">
+                    <li th:if="${@rq.logout}">
+                        <a href="/usr/member/login">
+                            <th:block th:utext="#{c.iconStart}"></th:block>
+                            <span th:text="#{c.pageNameStart}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${@rq.admin}">
+                        <a href="/adm/home/main">
+                            <th:block th:utext="#{c.iconAdmin}"></th:block>
+                            <span th:text="#{c.pageNameAdmin}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/member/pop">
+                            <th:block th:utext="#{c.iconPop}"></th:block>
+                            <span th:text="#{c.pageNamePop}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/likeablePerson/toList">
+                            <th:block th:utext="#{c.iconLikesIReceived}"></th:block>
+                            <span th:text="#{c.pageNameLikesIReceived}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/member/me">
+                            <th:block th:utext="#{c.iconMyProfile}"></th:block>
+                            <span th:text="#{c.pageNameMyProfile}"></span>
+                        </a>
+                    </li>
+
+                    <div th:if="${@rq.login}" class="divider"></div>
+
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/likeablePerson/like">
+                            <th:block th:utext="#{c.iconGivingALike}"></th:block>
+                            <span th:text="#{c.pageNameGivingALike}"></span>
+                        </a>
+                    </li>
+
+                    <li th:if="${@rq.login}">
+                        <a href="/usr/likeablePerson/list">
+                            <th:block th:utext="#{c.iconListOfLikes}"></th:block>
+                            <span th:text="#{c.pageNameListOfLikes}"></span>
+                        </a>
+                    </li>
+
+                    <li th:if="${@rq.login}" th:unless="${@rq.member.hasConnectedInstaMember}">
+                        <a href="/usr/instaMember/connectByApi">
+                            <th:block th:utext="#{c.iconLinkingInstagram}"></th:block>
+                            <span th:text="#{c.pageNameLinkingInstagram}"></span>
+                        </a>
+                    </li>
+
+                    <div th:if="${@rq.login}" class="divider"></div>
+
+                    <li>
+                        <a href="/usr/home/about">
+                            <th:block th:utext="#{c.iconWhatIsThisService}"></th:block>
+                            <span th:text="#{c.whatIsThisService}"></span>
+                        </a>
+                    </li>
+                    <li th:if="${@rq.login}">
+                        <a href="javascript:" onclick="$(this).next().submit();">
+                            <th:block th:utext="#{c.iconLogout}"></th:block>
+                            <span th:text="#{c.pageNameLogout}"></span>
+                        </a>
+                        <form class="!hidden" hidden th:action="|/usr/member/logout|" method="POST"></form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="navbar-center">
+            <a href="/" class="btn btn-ghost text-xl">
+                <span class="hidden normal-case	min-[339px]:inline" th:utext="#{c.logoTextWithEmojiEn}"></span>
+                <span class="normal-case min-[339px]:hidden" th:utext="#{c.logoEmoji}"></span>
+            </a>
+        </div>
+        <div class="navbar-end">
+            <a href="/usr/member/pop" class="btn btn-ghost gap-1" th:if="${@rq.login}">
+                <i class="fa-solid fa-chart-line"></i>
+            </a>
+            <a href="/usr/notification/list" class="btn btn-ghost btn-circle" th:if="${@rq.login}">
+                <div class="indicator">
+                    <i class="fa-regular fa-bell"></i>
+                    <span data-test="hasUnreadNotifications" th:if="${@rq.hasUnreadNotifications}"
+                          class="badge badge-xs badge-primary indicator-item"></span>
+                </div>
+            </a>
+            <a href="/usr/home/about" class="btn btn-ghost btn-circle" th:if="${@rq.logout}">
+                <th:block th:utext="#{c.iconWhatIsThisService}"></th:block>
+            </a>
+        </div>
+    </div>
+</header>
+
+</body>
+</html>
