@@ -13,7 +13,7 @@ management:
 spring:
   data:
     redis:
-      host: 172.17.0.1
+      host: redis-1-service
   lifecycle:
     timeout-per-shutdown-phase: 1m
   autoconfigure:
