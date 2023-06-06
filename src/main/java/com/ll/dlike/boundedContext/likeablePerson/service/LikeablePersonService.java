@@ -41,6 +41,7 @@ public class LikeablePersonService {
 
         LikeablePerson likeablePerson = LikeablePerson
                 .builder()
+                .fromMember(actor)
                 .fromInstaMember(fromInstaMember) // 호감을 표시하는 사람의 인스타 멤버
                 .fromInstaMemberUsername(actor.getInstaMember().getUsername()) // 중요하지 않음
                 .toInstaMember(toInstaMember) // 호감을 받는 사람의 인스타 멤버
@@ -115,7 +116,7 @@ public class LikeablePersonService {
         }
 
         // 액터가 생성한 `좋아요` 들 가져오기
-        List<LikeablePerson> fromLikeablePeople = fromInstaMember.getFromLikeablePeople();
+        List<LikeablePerson> fromLikeablePeople = fromInstaMember.getFromLikeablePeople(actor);
 
         // 그 중에서 좋아하는 상대가 username 인 녀석이 혹시 있는지 체크
         LikeablePerson fromLikeablePerson = fromLikeablePeople
@@ -179,7 +180,7 @@ public class LikeablePersonService {
     @Transactional
     public RsData<LikeablePerson> modifyAttractive(Member actor, String username, int attractiveTypeCode) {
         // 액터가 생성한 `좋아요` 들 가져오기
-        List<LikeablePerson> fromLikeablePeople = actor.getInstaMember().getFromLikeablePeople();
+        List<LikeablePerson> fromLikeablePeople = actor.getInstaMember().getFromLikeablePeople(actor);
 
         LikeablePerson fromLikeablePerson = fromLikeablePeople
                 .stream()

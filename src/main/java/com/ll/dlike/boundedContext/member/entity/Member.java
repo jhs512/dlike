@@ -4,7 +4,7 @@ import com.ll.dlike.base.baseEntity.BaseEntity;
 import com.ll.dlike.boundedContext.instaMember.entity.InstaMember;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -26,7 +26,7 @@ public class Member extends BaseEntity {
     @Column(unique = true)
     private String username;
     private String password;
-    @OneToOne // 1:1
+    @ManyToOne
     @Setter // memberService::updateInstaMember 함수 때문에
     private InstaMember instaMember;
 

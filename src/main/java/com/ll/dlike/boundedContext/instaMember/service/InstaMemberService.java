@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -35,8 +37,7 @@ public class InstaMemberService {
 
         // 등록이 되어있고, 성별이 U가 아니라
         if (opInstaMember.isPresent() && !opInstaMember.get().getGender().equals("U")) {
-            // 그러면 실패
-            return RsData.of("F-1", "해당 인스타그램 아이디는 이미 다른 사용자와 연결되었습니다.");
+            gender = opInstaMember.get().getGender();
         }
 
         //
@@ -128,10 +129,19 @@ public class InstaMemberService {
     }
 
     public void whenAfterFromInstaMemberChangeGender(InstaMember instaMember, String oldGender) {
+        final Map<Long, Boolean> alrearyProcessed = new HashMap<>();
+
         instaMember
-                .getFromLikeablePeople()
+                .getFromLikeablePeople(null)
                 .forEach(likeablePerson -> {
                     InstaMember toInstaMember = likeablePerson.getToInstaMember();
+
+                    if (alrearyProcessed.containsKey(toInstaMember.getId())) {
+                        return;
+                    }
+
+                    alrearyProcessed.put(toInstaMember.getId(), true);
+
                     toInstaMember.decreaseLikesCount(oldGender, likeablePerson.getAttractiveTypeCode());
                     toInstaMember.increaseLikesCount(instaMember.getGender(), likeablePerson.getAttractiveTypeCode());
 

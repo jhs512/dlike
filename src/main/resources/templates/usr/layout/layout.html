@@ -59,7 +59,7 @@
                     </li>
 
                     <li th:if="${@rq.login}" th:unless="${@rq.member.hasConnectedInstaMember}">
-                        <a href="/usr/instaMember/connectByApi">
+                        <a href="/usr/instaMember/connect">
                             <th:block th:utext="#{c.iconLinkingInstagram}"></th:block>
                             <span th:text="#{c.pageNameLinkingInstagram}"></span>
                         </a>

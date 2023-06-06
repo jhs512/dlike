@@ -64,7 +64,7 @@ public class LikeablePersonServiceTests {
         FROM likeable_person
         WHERE from_insta_member_id = 2;
         */
-        List<LikeablePerson> fromLikeablePeople = instaMemberInstaUser3.getFromLikeablePeople();
+        List<LikeablePerson> fromLikeablePeople = instaMemberInstaUser3.getFromLikeablePeople(likeablePersonId2.getFromMember());
 
         // 특정 회원이 호감을 표시한 좋아요 반복한다.
         for (LikeablePerson likeablePerson : fromLikeablePeople) {
@@ -98,8 +98,8 @@ public class LikeablePersonServiceTests {
         String usernameToLike = "insta_user4";
 
         // v1
-        LikeablePerson likeablePersonIndex0 = instaMemberInstaUser3.getFromLikeablePeople().get(0);
-        LikeablePerson likeablePersonIndex1 = instaMemberInstaUser3.getFromLikeablePeople().get(1);
+        LikeablePerson likeablePersonIndex0 = instaMemberInstaUser3.getFromLikeablePeople(likeablePersonId2.getFromMember()).get(0);
+        LikeablePerson likeablePersonIndex1 = instaMemberInstaUser3.getFromLikeablePeople(likeablePersonId2.getFromMember()).get(1);
 
         if (usernameToLike.equals(likeablePersonIndex0.getToInstaMember().getUsername())) {
             System.out.println("v1 : 이미 나(인스타아이디 : insta_user3)는 insta_user4에게 호감을 표시 했구나.");
@@ -110,7 +110,7 @@ public class LikeablePersonServiceTests {
         }
 
         // v2
-        for (LikeablePerson fromLikeablePerson : instaMemberInstaUser3.getFromLikeablePeople()) {
+        for (LikeablePerson fromLikeablePerson : instaMemberInstaUser3.getFromLikeablePeople(likeablePersonId2.getFromMember())) {
             String toInstaMemberUsername = fromLikeablePerson.getToInstaMember().getUsername();
 
             if (usernameToLike.equals(toInstaMemberUsername)) {
@@ -121,7 +121,7 @@ public class LikeablePersonServiceTests {
 
         // v3
         long count = instaMemberInstaUser3
-                .getFromLikeablePeople()
+                .getFromLikeablePeople(likeablePersonId2.getFromMember())
                 .stream()
                 .filter(lp -> lp.getToInstaMember().getUsername().equals(usernameToLike))
                 .count();
@@ -132,7 +132,7 @@ public class LikeablePersonServiceTests {
 
         // v4
         LikeablePerson oldLikeablePerson = instaMemberInstaUser3
-                .getFromLikeablePeople()
+                .getFromLikeablePeople(likeablePersonId2.getFromMember())
                 .stream()
                 .filter(lp -> lp.getToInstaMember().getUsername().equals(usernameToLike))
                 .findFirst()

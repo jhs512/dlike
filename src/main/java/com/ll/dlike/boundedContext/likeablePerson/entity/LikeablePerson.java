@@ -4,6 +4,7 @@ import com.ll.dlike.base.appConfig.AppConfig;
 import com.ll.dlike.base.baseEntity.BaseEntity;
 import com.ll.dlike.base.rsData.RsData;
 import com.ll.dlike.boundedContext.instaMember.entity.InstaMember;
+import com.ll.dlike.boundedContext.member.entity.Member;
 import com.ll.dlike.standard.util.Ut;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
@@ -21,6 +22,10 @@ import java.time.LocalDateTime;
 @ToString(callSuper = true)
 public class LikeablePerson extends BaseEntity {
     private LocalDateTime modifyUnlockDate;
+
+    @ManyToOne
+    @ToString.Exclude
+    private Member fromMember; // 호감을 표시한 사람(인스타 멤버)
 
     @ManyToOne
     @ToString.Exclude
@@ -71,6 +76,6 @@ public class LikeablePerson extends BaseEntity {
     }
 
     public String getJdenticon() {
-        return Ut.hash.sha256(fromInstaMember.getId() + "_likes_" + toInstaMember.getId());
+        return Ut.hash.sha256(fromMember.getId() + "_likes_" + toInstaMember.getId());
     }
 }
