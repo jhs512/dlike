@@ -1,6 +1,5 @@
 package com.ll.dlike.boundedContext.member.repository;
 
-
 import com.ll.dlike.boundedContext.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 

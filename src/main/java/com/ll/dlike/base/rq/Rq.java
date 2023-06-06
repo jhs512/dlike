@@ -1,9 +1,9 @@
 package com.ll.dlike.base.rq;
 
-
 import com.ll.dlike.base.rsData.RsData;
 import com.ll.dlike.boundedContext.member.entity.Member;
 import com.ll.dlike.boundedContext.member.service.MemberService;
+import com.ll.dlike.boundedContext.notification.service.NotificationService;
 import com.ll.dlike.standard.util.Ut;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,6 +25,7 @@ import java.util.Map;
 @RequestScope
 public class Rq {
     private final MemberService memberService;
+    private final NotificationService notificationService;
     private final MessageSource messageSource;
     private final LocaleResolver localeResolver;
     private Locale locale;
@@ -34,8 +35,9 @@ public class Rq {
     private final User user;
     private Member member = null; // 레이지 로딩, 처음부터 넣지 않고, 요청이 들어올 때 넣는다.
 
-    public Rq(MemberService memberService, MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
+    public Rq(MemberService memberService, NotificationService notificationService, MessageSource messageSource, LocaleResolver localeResolver, HttpServletRequest req, HttpServletResponse resp, HttpSession session) {
         this.memberService = memberService;
+        this.notificationService = notificationService;
         this.messageSource = messageSource;
         this.localeResolver = localeResolver;
         this.req = req;
@@ -149,7 +151,7 @@ public class Rq {
 
         if (!actor.hasConnectedInstaMember()) return false;
 
-        return false; // 임시구현
+        return notificationService.countUnreadNotificationsByToInstaMember(getMember().getInstaMember());
     }
 
     public String getCText(String code, String... args) {

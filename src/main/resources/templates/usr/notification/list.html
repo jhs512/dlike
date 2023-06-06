@@ -1,0 +1,69 @@
+<html layout:decorate="~{usr/layout/layout.html}">
+
+<head>
+    <title>알림</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
+    <div class="max-w-2xl w-full px-4">
+        <h1 class="mb-4">
+            <i class="fa-regular fa-bell"></i>
+            알림
+        </h1>
+
+        <div class="text-center mt-10" th:if="${#lists.isEmpty(notifications)}">
+            <i class="fa-regular fa-face-laugh"></i> 최근에 받은 알림이 없습니다.
+        </div>
+
+        <div class="flex flex-col gap-4">
+            <div class="card bg-base-100 shadow-xl" th:each="notification : ${notifications}">
+                <div class="card-body">
+                    <div class="flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-clock"></i>
+                            알림
+                        </div>
+                        <div>
+                            <span class="badge badge-primary">
+                                <span th:text="${#temporals.format(notification.createDate, 'yy.MM.dd HH:mm')}"></span>
+                                <span>, <span th:text="${notification.createDateAfterStrHuman}"></span></span>
+                            </span>
+                            <i th:if="${notification.isHot()}" class="fa-solid fa-fire text-red-500"></i>
+                        </div>
+                    </div>
+                    <div class="mt-4 flex flex-col gap-2">
+                        <div>
+                            <i class="fa-regular fa-message"></i>
+                            내용
+                        </div>
+                        <div th:if="${notification.typeCode == 'LIKE'}">
+                            어떤 <span class="badge badge-primary" th:text="${notification.newGenderDisplayName}"></span>이
+                            당신을 <span
+                                class="badge badge-primary"
+                                th:text="${notification.newAttractiveTypeDisplayName}">외모</span> 때문에 좋아합니다.
+                        </div>
+                        <div th:if="${notification.typeCode == 'MODIFY_ATTRACTIVE_TYPE'}">
+                            어떤
+                            <span class="badge badge-primary" th:text="${notification.newGenderDisplayName}"></span>이
+                            당신에 대한 호감사유를 <span
+                                class="badge badge-primary"
+                                th:text="${notification.oldAttractiveTypeDisplayName}"></span>에서 <span
+                                class="badge badge-primary"
+                                th:text="${notification.newAttractiveTypeDisplayName}"></span>(으)로
+                            변경했습니다.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</main>
+
+
+</body>
+
+</html>
+

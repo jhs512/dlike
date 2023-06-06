@@ -1,0 +1,119 @@
+<html layout:decorate="~{usr/layout/layout.html}">
+
+<head>
+    <title>당신이 좋아하는 사람들</title>
+</head>
+
+<body>
+
+<main layout:fragment="main" class="flex-grow flex items-center justify-center">
+    <div class="max-w-2xl w-full px-4">
+        <div th:unless="${@rq.member.hasConnectedInstaMember}" th:include="usr/part/needToConnect::base"></div>
+
+        <th:block th:if="${@rq.member.hasConnectedInstaMember}">
+            <div th:unless="${!#lists.isEmpty(likeablePeople)}" class="text-center">
+                <div><i class="fa-regular fa-face-laugh"></i> 목록이 비어있습니다. 당신의 호감을 표시해주세요.</div>
+            </div>
+
+            <h1 class="mb-4" th:if="${!#lists.isEmpty(likeablePeople)}">
+                <i class="fa-solid fa-list-ol"></i>
+                호감목록
+            </h1>
+
+            <ul th:if="${!#lists.isEmpty(likeablePeople)}" class="flex flex-col gap-4">
+                <li th:each="likeablePerson: ${likeablePeople}">
+                    <div class="card bg-base-100 shadow-xl">
+                        <div class="card-body">
+                            <h2 class="card-title">
+                                <span><i class="fa-brands fa-instagram"></i></span>
+                                <span th:data-test="|toInstaMember_username=${likeablePerson.toInstaMember.username}|"
+                                      th:text="${likeablePerson.toInstaMember.username}"></span>
+                            </h2>
+                            <a th:href="|https://instagram.com/${likeablePerson.toInstaMember.username}|"
+                               target="_blank" class="block text-sm break-all text-blue-400 underline">
+                                <span>https://instagram.com/</span><span class="text-red-400"
+                                                                         th:text="${likeablePerson.toInstaMember.username}"></span>
+                            </a>
+
+                            <div class="mt-4 mb-2 flex flex-col gap-2">
+                                <div>
+                                    <i class="fa-regular fa-clock"></i>
+                                    호감표시
+                                </div>
+                                <div class="mt-2">
+                                    <span class="badge badge-primary"
+                                          th:text="${#temporals.format(likeablePerson.createDate, 'yy.MM.dd HH:mm')}"></span>
+                                </div>
+                            </div>
+
+                            <div class="mt-4 mb-2 flex flex-col gap-2">
+                                <div>
+                                    <i class="fa-solid fa-check"></i>
+                                    호감사유
+                                </div>
+                                <div class="badge badge-primary"
+                                     th:data-test="|toInstaMember_attractiveTypeDisplayName=${likeablePerson.attractiveTypeDisplayName}|"
+                                     th:utext="${likeablePerson.attractiveTypeDisplayNameWithIcon}"></div>
+                            </div>
+
+                            <div class="mt-4 mb-2 flex flex-col gap-2">
+                                <div>
+                                    <i class="fa-regular fa-face-laugh-beam"></i>
+                                    상대방에게 보여지는 내 사진
+                                </div>
+                                <svg th:data-jdenticon-value="|${likeablePerson.jdenticon}|" width="120"
+                                     height="120"></svg>
+                            </div>
+
+                            <div class="card-actions justify-center">
+                                <a th:href="@{|modify/${likeablePerson.id}|}" class="btn btn-sm btn-outline"
+                                   th:classappend="${!likeablePerson.modifyUnlocked ? 'btn-disabled' : ''}">
+                                    <i class="fa-solid fa-pen-to-square"></i>
+
+                                    호감사유 변경
+                                </a>
+                                <a class="btn btn-sm btn-outline"
+                                   th:classappend="${!likeablePerson.modifyUnlocked ? 'btn-disabled' : ''}"
+                                   href="javascript:"
+                                   onclick="if ( confirm('정말로 취소하시겠습니까?') ) $(this).next().submit();">
+                                    <i class="fa-solid fa-user-slash"></i>
+                                    &nbsp;
+                                    호감취소
+                                </a>
+                                <form hidden th:action="@{|/usr/likeablePerson/${likeablePerson.id}|}" method="POST">
+                                    <input type="hidden" name="_method" value="delete">
+                                </form>
+                            </div>
+                            <div th:unless="${likeablePerson.modifyUnlocked}"
+                                 class="text-center text-gray-500 text-sm mt-2">
+                                <span class="text-red-400">호감사유 변경</span>과 <span
+                                    class="text-red-400">호감취소</span>는 <span
+                                    class="badge badge-primary"
+                                    th:text="${likeablePerson.modifyUnlockDateRemainStrHuman}"></span>에 가능합니다.
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </th:block>
+
+        <div class="text-center mt-4">
+            <a th:if="${@rq.member.hasConnectedInstaMember}" href="like" class="btn btn-link">
+                <span>
+                    <i class="fa-solid fa-heart-circle-plus"></i>
+                    호감표시&nbsp;
+                </span>
+            </a>
+            <a th:if="${@rq.member.hasConnectedInstaMember}" href="/usr/member/me" class="btn btn-link">
+                <span>
+                    <i class="fa-solid fa-user mr-1"></i>
+                    내 정보&nbsp;
+                </span>
+            </a>
+        </div>
+    </div>
+</main>
+</body>
+
+</html>
+

@@ -1,5 +1,6 @@
 package com.ll.dlike.base.security;
 
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,15 +13,24 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 @RequiredArgsConstructor
 public class SecurityConfig {
+    private final CustomOAuth2AccessTokenResponseClient oAuth2AccessTokenResponseClient;
+
     @Bean
     SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .formLogin(
                         formLogin -> formLogin
                                 .loginPage("/usr/member/login")
+                )
+                .oauth2Login(
+                        oauth2Login -> oauth2Login
+                                .loginPage("/usr/member/login")
+                                .tokenEndpoint(t -> t
+                                        .accessTokenResponseClient(oAuth2AccessTokenResponseClient)
+                                )
                 )
                 .logout(
                         logout -> logout
@@ -31,7 +41,7 @@ public class SecurityConfig {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 }
