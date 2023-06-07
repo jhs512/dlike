@@ -101,4 +101,4 @@ jobs:
           method: kubeconfig
           kubeconfig: ${{ secrets.KUBE_CONFIG }}
       - run: |
-          kubectl set image deployment.apps/gramgram-1-deployment gramgram-1=ghcr.io/jhs512/gramgram-1:${{ needs.tag.outputs.tag_name }}
+          kubectl set image deployment.apps/gramgram-1 gramgram-1=ghcr.io/jhs512/gramgram-1:${{ needs.tag.outputs.tag_name }}
