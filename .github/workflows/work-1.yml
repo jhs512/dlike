@@ -93,7 +93,7 @@ jobs:
           cache-to: type=gha,mode=max
   deploy:
     name: 쿠버네티스 배포
-    needs: docker
+    needs: [tag, docker]
     runs-on: ubuntu-latest
     steps:
       - uses: azure/k8s-set-context@v2
